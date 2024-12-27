@@ -1,4 +1,4 @@
-import App from "../../App.tsx";
+import App from "../layout/app/App.tsx";
 import {createBrowserRouter, createRoutesFromElements, Navigate, Route} from "react-router";
 import ViewFilm from "../../features/ViewFilm/ViewFilm.tsx";
 import NotFound from "../../features/Errors/NotFound.tsx";
