@@ -1,0 +1,74 @@
+.films-page {
+  margin-top: 15px;
+
+  .container-justify-end {
+    display: flex;
+    justify-content: end;
+
+    .add-film-button {
+      border-color: #009432;
+      background-color: #009432;
+
+      &:hover {
+        border-color: #44c662;
+        background-color: #44c662;
+      }
+    }
+  }
+
+  .films-page-container {
+    .film-table-item-name {
+      display: flex;
+      flex-direction: row;
+      justify-content: flex-start;
+      flex-wrap: wrap;
+      gap: 4px;
+    }
+
+    .film-page-actions {
+      display: flex;
+
+      .button-margin-right {
+        margin-right: 8px;
+      }
+
+      .action-film-button {
+        transition-property: transform;
+        transition-duration: 0.2s;
+        transition-timing-function: ease-in-out;
+
+        &:hover {
+          transform: scale(1.2);
+        }
+      }
+
+      .edit-film-button {
+        border-color: #4096ff;
+        color: #4096ff;
+      }
+
+      .delete-film-button {
+        border-color: #d63031;
+        color: #d63031;
+      }
+    }
+
+    .films-table {
+      margin-top: 20px;
+      margin-bottom: 10px;
+
+      .ant-table-cell {
+        font-size: 17px;
+      }
+
+      .ant-table-thead > tr > th {
+        font-weight: bold;
+        font-size: 18px;
+      }
+
+      .ant-table-row {
+        cursor: pointer;
+      }
+    }
+  }
+}
