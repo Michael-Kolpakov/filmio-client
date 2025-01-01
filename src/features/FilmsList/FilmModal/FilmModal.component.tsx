@@ -6,18 +6,17 @@ import Film, { FilmCreateUpdate } from "../../../models/films/films.model";
 import { Button, DatePicker, Form, Input, message, Modal } from "antd";
 import useMobx from "../../../app/stores/root-store";
 import dayjs from "dayjs";
+import { ERROR_MESSAGES } from "../../../app/common/constants/error-messages.constants";
+import { SUCCESS_MESSAGES } from "../../../app/common/constants/success-messages.constants";
+import { REGEX_CONSTANTS } from "../../../app/common/constants/regex.constants";
 
 const FilmModal: React.FC<{
   filmItem?: Film;
   open: boolean;
   setIsModalOpen: React.Dispatch<React.SetStateAction<boolean>>;
 }> = observer(({ filmItem, open, setIsModalOpen }) => {
-  const genre_regex_validation_pattern = new RegExp("^[a-zA-Z| ]*$");
-  const director_regex_validation_pattern = new RegExp("^[a-zA-Z' ]*$");
-  const rating_regex_validation_pattern = new RegExp("^[1-5]$");
   const { filmsStore } = useMobx();
   const [form] = Form.useForm();
-  const [actionSuccess, setActionSuccess] = useState<boolean>(false);
   const [waitingForApiResponse, setWaitingForApiResponse] = useState<boolean>(false);
   const [isSaved, setIsSaved] = useState<boolean>(false);
   const [isFormValid, setIsFormValid] = useState<boolean>(false);
@@ -28,14 +27,6 @@ const FilmModal: React.FC<{
     duration: 2,
     maxCount: 1,
   });
-
-  useEffect(() => {
-    setWaitingForApiResponse(false);
-    if (actionSuccess) {
-      message.success("Film added/saved successfully!");
-      setActionSuccess(false);
-    }
-  }, [actionSuccess]);
 
   useEffect(() => {
     if (filmItem && open) {
@@ -66,19 +57,12 @@ const FilmModal: React.FC<{
       setWaitingForApiResponse(true);
       await form.validateFields();
       form.submit();
-      message.success("Film added successfully!");
       setIsSaved(true);
+      setWaitingForApiResponse(false);
+      message.success(SUCCESS_MESSAGES.FILM.ADDING_EDITING);
     } catch {
       setWaitingForApiResponse(false);
-      message.error("Please fill in all the required fields and check validaion correctness!");
-    }
-  };
-
-  const closeModal = () => {
-    if (!waitingForApiResponse) {
-      form.resetFields();
-      setIsModalOpen(false);
-      setIsSaved(true);
+      message.error(ERROR_MESSAGES.FILM.WRONG_FORM_VALIDATION);
     }
   };
 
@@ -87,9 +71,9 @@ const FilmModal: React.FC<{
 
     const film: FilmCreateUpdate = {
       id: 0,
-      title: formValues.title,
-      genre: formValues.genre,
-      director: formValues.director,
+      title: formValues.title.trim(),
+      genre: formValues.genre.trim(),
+      director: formValues.director.trim(),
       releaseDate: formValues.releaseDate.format(),
       rating: formValues.rating,
       description: formValues.description?.trim() || null,
@@ -110,11 +94,9 @@ const FilmModal: React.FC<{
       } else {
         film.id = (await filmsStore.createFilm(film)).id;
       }
-
-      setActionSuccess(true);
     } catch {
-      message.error("An error occurred during adding/saving the film! Please try again later.");
       setWaitingForApiResponse(false);
+      message.error(ERROR_MESSAGES.FILM.SAVING_ERROR);
     }
   };
 
@@ -132,6 +114,14 @@ const FilmModal: React.FC<{
     );
   };
 
+  const closeModal = () => {
+    if (!waitingForApiResponse) {
+      form.resetFields();
+      setIsModalOpen(false);
+      setIsSaved(true);
+    }
+  };
+
   return (
     <Modal
       open={open}
@@ -146,7 +136,11 @@ const FilmModal: React.FC<{
             <p>{filmItem ? "Edit Film" : "Add Film"}</p>
           </div>
 
-          <Form.Item name="title" label="Title:" rules={[{ required: true, message: "Please enter a title" }]}>
+          <Form.Item
+            name="title"
+            label="Title:"
+            rules={[{ required: true, message: ERROR_MESSAGES.FILM.TITLE.REQUIRED }]}
+          >
             <Input maxLength={50} showCount onChange={handleInputChange} />
           </Form.Item>
 
@@ -154,10 +148,10 @@ const FilmModal: React.FC<{
             name="genre"
             label="Genre (use '|' character as a separator):"
             rules={[
-              { required: true, message: "Please enter a genre" },
+              { required: true, message: ERROR_MESSAGES.FILM.GENRE.REQUIRED },
               {
-                pattern: genre_regex_validation_pattern,
-                message: "Can only contain latin letters, spaces and the '|' character",
+                pattern: REGEX_CONSTANTS.FILM.GENRE,
+                message: ERROR_MESSAGES.FILM.GENRE.INVALID_FORMAT,
               },
             ]}
           >
@@ -168,10 +162,10 @@ const FilmModal: React.FC<{
             name="director"
             label="Director:"
             rules={[
-              { required: true, message: "Please enter a director" },
+              { required: true, message: ERROR_MESSAGES.FILM.DIRECTOR.REQUIRED },
               {
-                pattern: director_regex_validation_pattern,
-                message: "Can only contain latin letters and apostrophes",
+                pattern: REGEX_CONSTANTS.FILM.DIRECTOR,
+                message: ERROR_MESSAGES.FILM.DIRECTOR.INVALID_FORMAT,
               },
             ]}
           >
@@ -182,11 +176,11 @@ const FilmModal: React.FC<{
             name="releaseDate"
             label="Release date:"
             rules={[
-              { required: true, message: "Please enter a release date" },
+              { required: true, message: ERROR_MESSAGES.FILM.RELEASE_DATE.REQUIRED },
               {
                 validator: (_, value) =>
                   value && value.isAfter(dayjs())
-                    ? Promise.reject(new Error("Release date cannot be in the future"))
+                    ? Promise.reject(new Error(ERROR_MESSAGES.FILM.RELEASE_DATE.INVALID_FORMAT))
                     : Promise.resolve(),
               },
             ]}
@@ -199,8 +193,8 @@ const FilmModal: React.FC<{
             label="Rating:"
             rules={[
               {
-                pattern: rating_regex_validation_pattern,
-                message: "Rating must be an integer between 1 and 5",
+                pattern: REGEX_CONSTANTS.FILM.RATING,
+                message: ERROR_MESSAGES.FILM.RATING.INVALID_FORMAT,
               },
             ]}
           >
@@ -217,7 +211,7 @@ const FilmModal: React.FC<{
           disabled={!isFormValid || isSaved}
           type="primary"
           size="large"
-          className="add-film-button"
+          className="add-edit-film-button"
           onClick={handleOk}
         >
           {filmItem ? "Update film" : "Add film"}

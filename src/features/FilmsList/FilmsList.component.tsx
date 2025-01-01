@@ -35,7 +35,8 @@ const FilmsList: React.FC = observer(() => {
         await filmsStore.getAllFilms(defaultFilmsPerPage);
         modalStore.setConfirmationModal("confirmation");
       },
-      `Are you sure you want to delete '${record.title}'?`
+      `Are you sure you want to delete '${record.title}'?`,
+      "Delete"
     );
   };
 

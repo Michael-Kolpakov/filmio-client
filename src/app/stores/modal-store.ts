@@ -10,6 +10,7 @@ interface ConfirmationProps {
   onSubmit?: () => void;
   onCancel?: () => void;
   text?: string;
+  operationName?: string;
 }
 
 const DefaultModalState: ModalState = {
@@ -37,12 +38,13 @@ export default class ModalStore {
     modalName: keyof ModalList,
     onSubmit?: () => void,
     text?: string,
+    operationName?: string,
     opened?: boolean,
     onCancel?: () => void
   ) => {
     this.modalsState[modalName] = {
       isOpen: opened ?? !this.modalsState[modalName].isOpen,
-      confirmationProps: { onSubmit, text, onCancel },
+      confirmationProps: { onSubmit, text, operationName, onCancel },
     };
   };
 }
