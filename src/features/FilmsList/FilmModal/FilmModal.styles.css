@@ -1,0 +1,60 @@
+.modal-container {
+  &.ant-modal {
+    .ant-modal-close {
+      width: 80px;
+      height: 80px;
+      position: absolute;
+      left: 90%;
+      top: -25px;
+      background-color: white;
+      border-radius: 50% !important;
+      overflow: hidden !important;
+      border: 2px solid #ece9e9 !important;
+
+      &:hover {
+        background-color: #ece9e9 !important;
+      }
+    }
+
+    .ant-modal-content {
+      border-radius: 60px !important;
+      overflow: visible !important;
+      padding: 40px;
+
+      .center {
+        display: flex;
+        justify-content: center;
+        font-size: 25px;
+        font-weight: bold;
+
+        p {
+          margin-top: 10px;
+        }
+      }
+    }
+  }
+
+  .custom-close-button {
+    width: 40px;
+    height: 40px;
+  }
+
+  .add-film-button {
+    border-color: #009432;
+    background-color: #009432;
+
+    &:hover:enabled {
+      border-color: #007816;
+      background-color: #007816;
+    }
+
+    &:disabled {
+      border-color: initial;
+      background-color: initial;
+    }
+  }
+
+  .ant-form-item-label > label {
+    font-weight: 600;
+  }
+}

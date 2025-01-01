@@ -1,0 +1,81 @@
+.view-film-page {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+
+  .container-justify-start {
+    display: flex;
+    justify-content: start;
+    width: 100%;
+
+    .go-back-button {
+      border-color: #009432;
+      background-color: #009432;
+
+      &:hover {
+        border-color: #44c662;
+        background-color: #44c662;
+      }
+    }
+  }
+
+  .divider {
+    border-color: #b2bec3;
+    width: 100%;
+  }
+
+  .content-columns {
+    display: flex;
+    gap: 20px;
+    width: 65%;
+    margin: 0 auto;
+
+    .left-column {
+      flex: 1 1 auto;
+    }
+
+    .right-column {
+      flex: 0 0 40%;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+  }
+
+  .rating-section {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-top: 20px;
+
+    .ant-rate-star {
+      font-size: 28px;
+    }
+
+    .ant-typography {
+      font-size: 17px;
+    }
+  }
+
+  .director-section,
+  .genres-section,
+  .release-date-section,
+  .description-section {
+    font-size: 18px;
+    margin-bottom: 6px;
+
+    .ant-tag {
+      font-size: 16px;
+      padding: 5px 10px;
+    }
+
+    .ant-typography,
+    .ant-typography-paragraph {
+      font-size: 18px;
+    }
+  }
+
+  .director-section {
+    margin-bottom: 30px;
+  }
+}
