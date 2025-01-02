@@ -1,8 +1,29 @@
 export const ERROR_MESSAGES = {
+  REGISTRATION: {
+    FULL_NAME: {
+      REQUIRED: "Please enter your first and second name",
+      INVALID_FORMAT: "Your name can only contain latin letters, spaces and apostrophes",
+    },
+    EMAIL: {
+      REQUIRED: "Please enter your email",
+      INVALID_FORMAT: "Value must be a valid email",
+    },
+    PASSWORD: {
+      REQUIRED: "Please enter your password",
+      INVALID_FORMAT: "Password can only contain numbers and latin letters",
+    },
+    CONFIRM_PASSWORD: {
+      REQUIRED: "Please confirm your password",
+      INVALID_FORMAT: "Password can only contain numbers and latin letters",
+      MISMATCH: "Passwords do not match",
+    },
+    INVALID_REGISTRATION_ATTEMPT: "Ensure all fields are filled correctly and try again",
+  },
+
   LOGIN: {
-    USERNAME: {
-      REQUIRED: "Please enter your username",
-      INVALID_FORMAT: "Username must be a valid email",
+    EMAIL: {
+      REQUIRED: "Please enter your login (email)",
+      INVALID_FORMAT: "Login must be a valid email",
     },
     PASSWORD: {
       REQUIRED: "Please enter your password",

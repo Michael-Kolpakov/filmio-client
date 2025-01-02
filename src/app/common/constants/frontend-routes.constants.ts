@@ -1,8 +1,8 @@
 export const FRONTEND_ROUTES = {
   BASE: "/",
   MAIN: {
+    REGISTRATION: "/registration",
     LOGIN: "/login",
-    FILMS: "/films",
     VIEW_FILM: "/films/view",
   },
   OTHER_PAGER: {
