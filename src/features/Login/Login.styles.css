@@ -1,7 +1,7 @@
 .login-page {
   display: flex;
   justify-content: center;
-  margin-top: 80px;
+  margin-top: 60px;
   align-items: center;
 
   .login-container {
@@ -24,6 +24,7 @@
     }
 
     .login-button {
+      margin-top: 30px;
       border-color: #009432;
       background-color: #009432;
 
@@ -37,11 +38,15 @@
         background-color: initial;
       }
     }
-  }
-}
 
-.login-form-item input {
-  padding: 0.5rem;
-  border: 1px solid #d9d9d9;
-  border-radius: 4px;
+    .registration-link {
+      color: blue;
+      margin-top: 10px;
+      display: block;
+      text-align: center;
+      font-size: 16px;
+      font-weight: normal;
+      text-decoration: none;
+    }
+  }
 }
