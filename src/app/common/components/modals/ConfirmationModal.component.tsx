@@ -1,17 +1,17 @@
 import { observer } from "mobx-react-lite";
 import { Modal, Button, message } from "antd";
-import { useModalContext } from "../../../stores/root-store";
+import useMobx from "../../../stores/root-store";
 import React from "react";
 import { SUCCESS_MESSAGES } from "../../constants/success-messages.constants";
 import { ERROR_MESSAGES } from "../../constants/error-messages.constants";
 
 const ConfirmationModal: React.FC = observer(() => {
   const {
-    modalStore: {
+    modalsStore: {
       setConfirmationModal,
       modalsState: { confirmation },
     },
-  } = useModalContext();
+  } = useMobx();
 
   const handleCancel = () => {
     if (confirmation.confirmationProps?.onCancel) {
@@ -35,6 +35,7 @@ const ConfirmationModal: React.FC = observer(() => {
     <Modal
       title="Confirmation"
       open={confirmation.isOpen}
+      onCancel={handleCancel}
       footer={[
         <Button key="cancel" onClick={handleCancel}>
           Cancel

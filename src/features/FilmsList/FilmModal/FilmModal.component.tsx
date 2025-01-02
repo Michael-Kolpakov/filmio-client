@@ -66,7 +66,14 @@ const FilmModal: React.FC<{
     }
   };
 
-  const onSuccessfulSubmit = async (formValues: any) => {
+  const onSuccessfulSubmit = async (formValues: {
+    title: string;
+    genre: string;
+    director: string;
+    releaseDate: dayjs.Dayjs;
+    rating: string;
+    description?: string;
+  }) => {
     message.loading("Saving...");
 
     const film: FilmCreateUpdate = {
@@ -75,8 +82,8 @@ const FilmModal: React.FC<{
       genre: formValues.genre.trim(),
       director: formValues.director.trim(),
       releaseDate: formValues.releaseDate.format(),
-      rating: formValues.rating,
-      description: formValues.description?.trim() || null,
+      rating: Number(formValues.rating),
+      description: formValues.description?.trim() || "",
     };
 
     filmsStore.getFilmsArray
@@ -120,6 +127,14 @@ const FilmModal: React.FC<{
       setIsModalOpen(false);
       setIsSaved(true);
     }
+  };
+
+  const validateReleaseDate = (_: any, value: dayjs.Dayjs) => {
+    if (value && value.isAfter(dayjs())) {
+      return Promise.reject(new Error(ERROR_MESSAGES.FILM.RELEASE_DATE.INVALID_FORMAT));
+    }
+
+    return Promise.resolve();
   };
 
   return (
@@ -177,12 +192,7 @@ const FilmModal: React.FC<{
             label="Release date:"
             rules={[
               { required: true, message: ERROR_MESSAGES.FILM.RELEASE_DATE.REQUIRED },
-              {
-                validator: (_, value) =>
-                  value && value.isAfter(dayjs())
-                    ? Promise.reject(new Error(ERROR_MESSAGES.FILM.RELEASE_DATE.INVALID_FORMAT))
-                    : Promise.resolve(),
-              },
+              { validator: validateReleaseDate },
             ]}
           >
             <DatePicker onChange={handleInputChange} />

@@ -1,4 +1,4 @@
-import Agent from "../agent.ts";
+import Agent from "../agent.api.ts";
 import Film, { FilmCreateUpdate, FilmPaginated } from "../../../models/films/films.model.ts";
 import { API_ROUTES } from "../../common/constants/api-routes.constants.ts";
 

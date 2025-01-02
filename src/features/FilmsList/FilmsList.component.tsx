@@ -2,7 +2,7 @@ import "./FilmsList.styles.css";
 import React, { useEffect, useState } from "react";
 import { Table, Button, Empty } from "antd";
 import { EditOutlined, DeleteOutlined, PlusOutlined } from "@ant-design/icons";
-import useMobx, { useModalContext } from "../../app/stores/root-store";
+import useMobx from "../../app/stores/root-store";
 import { observer } from "mobx-react-lite";
 import { useNavigate } from "react-router-dom";
 import Film from "../../models/films/films.model";
@@ -13,8 +13,7 @@ import { FRONTEND_ROUTES } from "../../app/common/constants/frontend-routes.cons
 const FilmsList: React.FC = observer(() => {
   const defaultFilmsPerPage = 15;
   const navigate = useNavigate();
-  const { filmsStore } = useMobx();
-  const { modalStore } = useModalContext();
+  const { filmsStore, modalsStore } = useMobx();
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [modalAddOpened, setModalAddOpened] = useState<boolean>(false);
   const [modalEditOpened, setModalEditOpened] = useState<boolean>(false);
@@ -28,12 +27,12 @@ const FilmsList: React.FC = observer(() => {
   }, [filmsStore, modalAddOpened, modalEditOpened]);
 
   const handleDelete = (record: Film) => {
-    modalStore.setConfirmationModal(
+    modalsStore.setConfirmationModal(
       "confirmation",
       async () => {
         await filmsStore.deleteFilm(record.id);
         await filmsStore.getAllFilms(defaultFilmsPerPage);
-        modalStore.setConfirmationModal("confirmation");
+        modalsStore.setConfirmationModal("confirmation");
       },
       `Are you sure you want to delete '${record.title}'?`,
       "Delete"
@@ -95,6 +94,7 @@ const FilmsList: React.FC = observer(() => {
 
   return (
     <div className="films-page">
+      <h1>Films List</h1>
       <div className="films-page-container">
         <div className="container-justify-end">
           <Button
