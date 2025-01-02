@@ -1,0 +1,46 @@
+.server-error-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 100vh;
+  text-align: center;
+  color: #721c24;
+}
+
+.server-error-title {
+  font-size: 48px;
+  font-weight: bold;
+  margin-bottom: 20px;
+}
+
+.server-error-message {
+  font-size: 24px;
+  margin-bottom: 20px;
+}
+
+.server-error-details-container {
+  margin-bottom: 20px;
+  text-align: left;
+  max-width: 80%;
+}
+
+.server-error-details-label {
+  font-size: 18px;
+  font-weight: bold;
+  margin-bottom: 10px;
+}
+
+.server-error-details {
+  font-size: 16px;
+  white-space: pre-wrap;
+  overflow: auto;
+  background-color: #f1f1f1;
+  padding: 10px;
+  border-radius: 5px;
+  color: #333;
+}
+
+.server-error-button {
+  font-size: 16px;
+}
