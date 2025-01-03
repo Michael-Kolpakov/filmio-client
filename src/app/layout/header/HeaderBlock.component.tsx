@@ -57,7 +57,7 @@ const HeaderBlock = observer(() => {
       <div className="logo" onClick={handleLogoClick}>
         Filmio
       </div>
-      {usersStore.isLoggedIn() ? (
+      {usersStore.getIsUserLoggedIn() ? (
         <Dropdown menu={{ items }} placement="bottomRight">
           <a onClick={(e) => e.preventDefault()} className="user-menu">
             <Space>
