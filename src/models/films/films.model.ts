@@ -4,8 +4,8 @@ export default interface Film {
   genre: string;
   director: string;
   releaseDate: string;
-  rating: number;
-  description: string;
+  rating: number | null;
+  description: string | null;
 }
 
 export interface FilmPaginated {

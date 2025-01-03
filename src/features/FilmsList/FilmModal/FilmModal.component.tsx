@@ -59,7 +59,6 @@ const FilmModal: React.FC<{
       form.submit();
       setIsSaved(true);
       setWaitingForApiResponse(false);
-      message.success(SUCCESS_MESSAGES.FILM.ADDING_EDITING);
     } catch {
       setWaitingForApiResponse(false);
       message.error(ERROR_MESSAGES.FILM.WRONG_FORM_VALIDATION);
@@ -82,8 +81,8 @@ const FilmModal: React.FC<{
       genre: formValues.genre.trim(),
       director: formValues.director.trim(),
       releaseDate: formValues.releaseDate.format(),
-      rating: Number(formValues.rating),
-      description: formValues.description?.trim() || "",
+      rating: formValues.rating ? Number(formValues.rating) : null,
+      description: formValues.description?.trim() || null,
     };
 
     filmsStore.getFilmsArray
@@ -101,6 +100,7 @@ const FilmModal: React.FC<{
       } else {
         film.id = (await filmsStore.createFilm(film)).id;
       }
+      message.success(SUCCESS_MESSAGES.FILM.ADDING_EDITING);
     } catch {
       setWaitingForApiResponse(false);
       message.error(ERROR_MESSAGES.FILM.SAVING_ERROR);

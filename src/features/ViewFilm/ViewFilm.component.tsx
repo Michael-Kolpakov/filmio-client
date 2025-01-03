@@ -37,7 +37,7 @@ const ViewFilm: React.FC = observer(() => {
       const filmData = await filmsStore.getFilmById(Number(id));
       setFilm(filmData);
     };
-    fetchFilm();
+    void fetchFilm();
   }, [id, filmsStore]);
 
   const goToPreviousPage = () => {

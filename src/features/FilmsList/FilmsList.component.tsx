@@ -17,11 +17,11 @@ const FilmsList: React.FC = observer(() => {
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [modalAddOpened, setModalAddOpened] = useState<boolean>(false);
   const [modalEditOpened, setModalEditOpened] = useState<boolean>(false);
-  const [filmToEdit, setFilmToedit] = useState<Film>();
+  const [filmToEdit, setFilmToEdit] = useState<Film>();
 
   useEffect(() => {
     setIsLoading(true);
-    filmsStore.getAllFilms(defaultFilmsPerPage);
+    void filmsStore.getAllFilms(defaultFilmsPerPage);
     filmsStore.setInternalMap(filmsStore.getFilmsArray);
     setIsLoading(false);
   }, [filmsStore, modalAddOpened, modalEditOpened]);
@@ -75,7 +75,7 @@ const FilmsList: React.FC = observer(() => {
             className="action-film-button edit-film-button button-margin-right"
             size="large"
             onClick={() => {
-              setFilmToedit(record);
+              setFilmToEdit(record);
               setModalEditOpened(true);
             }}
           />
