@@ -1,29 +1,16 @@
 export default interface Film {
-    id: number, 
-    title: string,
-    genre: string,
-    director: string,
-    releaseDate: string,
-    rating: number,
-    description: string,
-}
-
-export interface FilmCreate extends FilmCreateUpdate {}
-
-export interface FilmUpdate extends FilmCreateUpdate {
-    id: number,
+  id: number;
+  title: string;
+  genre: string;
+  director: string;
+  releaseDate: string;
+  rating: number | null;
+  description: string | null;
 }
 
 export interface FilmPaginated {
-    totalAmount: number,
-    films: Film[],
+  totalAmount: number;
+  films: Film[];
 }
 
-interface FilmCreateUpdate {
-    title: string,
-    genre: string,
-    director: string,
-    releaseDate: string,
-    rating: number,
-    description: string,
-}
+export interface FilmCreateUpdate extends Film {}

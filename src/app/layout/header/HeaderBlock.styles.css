@@ -1,0 +1,22 @@
+.header {
+  background-color: #5f27cd;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 10px 20px;
+}
+
+.logo {
+  color: white;
+  font-size: 24px;
+  cursor: pointer;
+  font-weight: bold;
+}
+
+.user-menu {
+  cursor: pointer;
+  color: white;
+  display: flex;
+  align-items: center;
+  font-weight: 600;
+}
