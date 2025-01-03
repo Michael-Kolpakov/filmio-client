@@ -75,8 +75,10 @@ const Login: React.FC = () => {
 
           <Form.Item
             name="password"
+            validateFirst
             rules={[
               { required: true, message: ERROR_MESSAGES.LOGIN.PASSWORD.REQUIRED },
+              { min: 6, message: ERROR_MESSAGES.LOGIN.PASSWORD.PASSWORD_MIN_LENGTH },
               { pattern: REGEX_CONSTANTS.COMMON.PASSWORD, message: ERROR_MESSAGES.LOGIN.PASSWORD.INVALID_FORMAT },
             ]}
           >

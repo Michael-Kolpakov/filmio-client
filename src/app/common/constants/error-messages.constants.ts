@@ -17,6 +17,7 @@ export const ERROR_MESSAGES = {
       INVALID_FORMAT: "Password can only contain numbers and latin letters",
       MISMATCH: "Passwords do not match",
     },
+    PASSWORD_MIN_LENGTH: "Password must be at least 6 characters long",
     INVALID_REGISTRATION_ATTEMPT: "Ensure all fields are filled correctly and try again",
   },
 
@@ -27,6 +28,7 @@ export const ERROR_MESSAGES = {
     },
     PASSWORD: {
       REQUIRED: "Please enter your password",
+      PASSWORD_MIN_LENGTH: "Password must be at least 6 characters long",
       INVALID_FORMAT: "Password can only contain numbers and latin letters",
     },
     INVALID_LOGIN_ATTEMPT: "Ensure all fields are filled correctly and try again",

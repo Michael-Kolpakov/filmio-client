@@ -97,8 +97,10 @@ const Registration: React.FC = () => {
 
           <Form.Item
             name="password"
+            validateFirst
             rules={[
               { required: true, message: ERROR_MESSAGES.REGISTRATION.PASSWORD.REQUIRED },
+              { min: 6, message: ERROR_MESSAGES.REGISTRATION.PASSWORD_MIN_LENGTH },
               {
                 pattern: REGEX_CONSTANTS.COMMON.PASSWORD,
                 message: ERROR_MESSAGES.REGISTRATION.PASSWORD.INVALID_FORMAT,
@@ -111,8 +113,10 @@ const Registration: React.FC = () => {
           <Form.Item
             name="confirmPassword"
             dependencies={["password"]}
+            validateFirst
             rules={[
               { required: true, message: ERROR_MESSAGES.REGISTRATION.CONFIRM_PASSWORD.REQUIRED },
+              { min: 6, message: ERROR_MESSAGES.REGISTRATION.PASSWORD_MIN_LENGTH },
               {
                 pattern: REGEX_CONSTANTS.COMMON.PASSWORD,
                 message: ERROR_MESSAGES.REGISTRATION.CONFIRM_PASSWORD.INVALID_FORMAT,
