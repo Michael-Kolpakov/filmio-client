@@ -34,7 +34,8 @@ const router = createBrowserRouter(
       <Route path={FRONTEND_ROUTES.OTHER_PAGER.SERVER_ERROR} element={<ServerError />} />
       <Route path={FRONTEND_ROUTES.ANY} element={<Navigate replace to={FRONTEND_ROUTES.OTHER_PAGER.NOT_FOUND} />} />
     </Route>
-  )
+  ),
+  { basename: import.meta.env.BASE_URL }
 );
 
 export default router;
