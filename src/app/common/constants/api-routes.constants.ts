@@ -3,8 +3,6 @@ export const API_ROUTES = {
   AUTH: {
     REGISTRATION: "/auth/registration",
     LOGIN: "/auth/login",
-    REFRESH_TOKEN: "/auth/refresh-token",
-    LOGOUT: "/auth/logout",
     DELETE: "/auth/delete",
   },
   FILMS: {

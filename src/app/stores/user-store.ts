@@ -1,30 +1,30 @@
 import { makeAutoObservable } from "mobx";
-import User, { RefreshTokenRequest, UserLoginRequest, UserRegistrationRequest } from "../../models/user/user.model";
+import User, { UserLoginRequest, UserRegistrationRequest } from "../../models/user/user.model";
 import AuthApi from "../api/auth/auth.api";
+import { jwtDecode, JwtPayload } from 'jwt-decode';
 
 export default class UserStore {
-  private user = {} as User;
-  private isAuth = false;
   private accessTokenName: string = "accessToken";
+  private userName: string = "user";
 
   constructor() {
     makeAutoObservable(this);
   }
 
-  public setAuth = (isAuth: boolean) => {
-    this.isAuth = isAuth;
-  };
-
-  public getAuth = () => {
-    return this.isAuth;
-  };
-
   public setUser = (user: User) => {
-    this.user = user;
+    localStorage.setItem(this.userName, JSON.stringify(user));
   };
 
   public getUser = () => {
-    return this.user;
+    const userJson = localStorage.getItem(this.userName);
+
+    if (userJson !== null) {
+      return JSON.parse(userJson);
+    }
+  };
+
+  public clearUser = () => {
+    localStorage.removeItem(this.userName);
   };
 
   public getAccessToken = () => {
@@ -34,6 +34,12 @@ export default class UserStore {
   public setAccessToken = (accessToken: string) => {
     localStorage.setItem(this.accessTokenName, accessToken);
   };
+  
+  public isLoggedIn = () => {
+    const token = this.getAccessToken();
+
+    return !(!this.isAccessTokenHasValidSignature(token) || this.isAccessTokenExpired(token!));
+  }
 
   public clearAccessToken = () => {
     localStorage.removeItem(this.accessTokenName);
@@ -48,7 +54,6 @@ export default class UserStore {
 
     const response = await AuthApi.registration(userRegistrationRequest);
     this.setAccessToken(response.accessToken);
-    this.setAuth(true);
     this.setUser(response.user);
 
     return response;
@@ -56,47 +61,50 @@ export default class UserStore {
 
   public login = async (email: string, password: string) => {
     const userLoginRequest: UserLoginRequest = {
-      login: email,
+      email: email,
       password: password,
     };
 
     const response = await AuthApi.login(userLoginRequest);
     this.setAccessToken(response.accessToken);
-    this.setAuth(true);
     this.setUser(response.user);
 
     return response;
   };
 
   public logout = async () => {
-    await AuthApi.logout();
     this.clearAccessToken();
-    this.setAuth(false);
-    this.setUser({} as User);
+    this.clearUser();
   };
 
   public deleteAccount = async () => {
-    await AuthApi.delete();
-    this.clearAccessToken();
-    this.setAuth(false);
-    this.setUser({} as User);
+    await AuthApi.delete().then(() => {
+      this.clearAccessToken();
+      this.clearUser();
+    });
   };
 
-  public refreshToken = async () => {
-    const accessToken = this.getAccessToken();
+  private isAccessTokenHasValidSignature = (token: string | null) => {
+    return !!token && !!this.getDecodedAccessToken(token);
+  }
 
-    if (!accessToken) {
-      return;
+  private getDecodedAccessToken = (token: string) => {
+    let decodedToken: JwtPayload | null = null;
+
+    try {
+      decodedToken = jwtDecode<JwtPayload>(token);
+    } catch {
+      return null;
     }
 
-    const refreshTokenRequest: RefreshTokenRequest = {
-      accessToken: accessToken,
-    };
+    return decodedToken;
+  }
 
-    const response = await AuthApi.refreshToken(refreshTokenRequest);
-    this.setAccessToken(response.accessToken);
-    this.setAuth(true);
+  private isAccessTokenExpired = (token: string) => {
+    const decodedToken = this.getDecodedAccessToken(token);
+    const expirationTime = ((decodedToken && decodedToken?.exp) || 0) * 1000;
+    const actualTime = new Date().getTime();
 
-    return response;
-  };
+    return expirationTime <= actualTime;
+  }
 }

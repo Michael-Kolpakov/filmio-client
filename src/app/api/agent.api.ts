@@ -22,7 +22,6 @@ const createAxiosInstance = (baseUrl: string) => {
   instance.interceptors.response.use(
     async (response) => response,
     async (error) => {
-      const originalRequest = error.config;
       let errorMessage = "";
 
       if (error.message === "Network Error") {
@@ -32,7 +31,7 @@ const createAxiosInstance = (baseUrl: string) => {
       switch (error.response?.status) {
         case StatusCodes.INTERNAL_SERVER_ERROR:
           store.commonStore.setServerError(error.data);
-          void router.navigate(FRONTEND_ROUTES.OTHER_PAGER.SERVER_ERROR);
+          await router.navigate(FRONTEND_ROUTES.OTHER_PAGER.SERVER_ERROR);
           break;
         case StatusCodes.NOT_FOUND:
           errorMessage = ReasonPhrases.NOT_FOUND;
@@ -40,13 +39,10 @@ const createAxiosInstance = (baseUrl: string) => {
         case StatusCodes.BAD_REQUEST:
           errorMessage = ReasonPhrases.BAD_REQUEST;
           break;
-        case StatusCodes.UNAUTHORIZED && !originalRequest._isRetry: {
-          originalRequest._isRetry = true;
-
-          const response = await store.usersStore.refreshToken();
-          originalRequest.headers.Authorization = `Bearer ${response?.accessToken}`;
-
-          return axios(originalRequest);
+        case StatusCodes.UNAUTHORIZED: {
+          await store.usersStore.logout();
+          await router.navigate(FRONTEND_ROUTES.MAIN.LOGIN);
+          break;
         }
         case StatusCodes.FORBIDDEN:
           errorMessage = ReasonPhrases.FORBIDDEN;

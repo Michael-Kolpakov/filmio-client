@@ -1,6 +1,6 @@
 export default interface User {
   fullName: string;
-  login: string;
+  email: string;
 }
 
 export interface UserRegistrationRequest {
@@ -15,7 +15,7 @@ export interface UserRegistrationResponse {
 }
 
 export interface UserLoginRequest {
-  login: string;
+  email: string;
   password: string;
 }
 
